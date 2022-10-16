@@ -114,3 +114,4 @@ void RVector::ShowVector(std::vector<double> v) {
     }
     cout << endl << endl;
 }
+

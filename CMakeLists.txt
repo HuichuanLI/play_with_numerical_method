@@ -3,5 +3,5 @@ project(play_with_algo)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES    ./Rvector.h RVector.cpp main.cpp)
+set(SOURCE_FILES ./Rvector.h RVector.cpp RMatrix.cpp RMatrix.h main.cpp)
 add_executable(play_with_algo ${SOURCE_FILES})
