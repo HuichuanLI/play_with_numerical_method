@@ -34,6 +34,15 @@ public:
 
     static RVector Pow(RVector v, double x);
 
+    static RVector LineSpace(double start, double end, int n);
+
+    static RVector LineSpace(double start, double inter, double n);
+
+
+    static void ShowVector(RVector v);
+
+    static void ShowVector(std::vector<double> v);
+
 };
 
 #endif //PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H

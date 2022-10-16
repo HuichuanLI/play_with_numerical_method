@@ -3,6 +3,8 @@
 //
 #include "Rvector.h"
 #include <cmath>
+#include <iostream>
+#include <iomanip>
 
 RVector::RVector() {
     ndim = NULL;
@@ -79,4 +81,36 @@ RVector RVector::Pow(RVector v, double x) {
         r[i] = pow(v[i], x);
     }
     return r;
+}
+
+RVector RVector::LineSpace(double start, double end, int n) {
+    RVector r(n + 1);
+    for (int i = 0; i < r.ndim; i++) {
+        r.vector[i] = start + (end - start) / n * i;
+    }
+    return r;
+}
+
+RVector RVector::LineSpace(double start, double inter, double end) {
+    int ndim = (int) (floor((end - start) / inter) + 1);
+    RVector r(ndim);
+    for (int i = 0; i < r.ndim; i++) {
+        r.vector[i] = start + inter * i;
+    }
+    return r;
+}
+
+
+void RVector::ShowVector(RVector v) {
+    for (int i = 0; i < v.ndim; i++) {
+        cout << fixed << setprecision(4) << v[i] << " ";
+    }
+    cout << endl << endl;
+}
+
+void RVector::ShowVector(std::vector<double> v) {
+    for (int i = 0; i < v.size(); i++) {
+        cout << fixed << setprecision(4) << v[i] << " ";
+    }
+    cout << endl << endl;
 }

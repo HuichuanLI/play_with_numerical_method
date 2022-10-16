@@ -11,4 +11,6 @@ int main() {
     RVector v3 = v2;
     RVector v4(v3);
     RVector v5;
+
+    RVector::ShowVector(v2);
 }
