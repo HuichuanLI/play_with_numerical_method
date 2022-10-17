@@ -45,6 +45,13 @@ public:
 
     static RVector ZerosVector(int n);
 
+
+    static double UniformRandom();
+
+    static RVector UniformRandomVector(int ndim);
+
+    
+
 };
 
 #endif //PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H

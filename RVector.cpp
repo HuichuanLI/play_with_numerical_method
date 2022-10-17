@@ -122,3 +122,23 @@ RVector RVector::ZerosVector(int n) {
     }
     return r;
 }
+
+
+double RVector::UniformRandom() {
+    srand((unsigned) time(NULL));
+    return rand() / double(RAND_MAX);
+}
+
+
+RVector RVector::UniformRandomVector(int ndim) {
+    if (ndim <= 0) {
+        throw "Error!";
+    }
+    RVector result(ndim);
+    srand((unsigned) time(NULL));
+
+    for (int i = 0; i < ndim; i++) {
+        result[i] = rand() / double(RAND_MAX);
+    }
+    return result;
+}
