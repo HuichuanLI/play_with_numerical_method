@@ -43,6 +43,8 @@ public:
 
     static void ShowVector(std::vector<double> v);
 
+    static RVector ZerosVector(int n);
+
 };
 
 #endif //PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H

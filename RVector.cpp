@@ -115,3 +115,10 @@ void RVector::ShowVector(std::vector<double> v) {
     cout << endl << endl;
 }
 
+RVector RVector::ZerosVector(int n) {
+    RVector r(n);
+    for (int i = 0; i < r.ndim; i++) {
+        r.vector[i] = 0;
+    }
+    return r;
+}
