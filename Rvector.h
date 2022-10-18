@@ -2,6 +2,7 @@
 // Created by lhc456 on 2022/10/16.
 //
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 #ifndef PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H
@@ -50,7 +51,35 @@ public:
 
     static RVector UniformRandomVector(int ndim);
 
-    
+    static RVector NormalRandomVector(int ndim);
+
+    static RVector UniformRandomVector(int ndim, double min, double max);
+
+    static RVector RandomShuffle(RVector v);
+
+    static double  Average(RVector v);
+
+
+    static double Max(RVector v);
+
+    static double Min(RVector v);
+
+    static double Sum(RVector v);
+
+    static double StadnardDeviation(RVector v);
+
+    static double Variance(RVector v);
+
+    static double Covariance(RVector x, RVector y);
+
+    static double Correlation(RVector x, RVector y);
+
+    static RVector MinMaxNormalization(RVector x);
+
+    static RVector ZeroScoreNormalization(RVector x);
+
+    static double Distance(RVector x, RVector y);
+
 
 };
 

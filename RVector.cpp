@@ -142,3 +142,155 @@ RVector RVector::UniformRandomVector(int ndim) {
     }
     return result;
 }
+
+RVector RVector::NormalRandomVector(int ndim) {
+    if (ndim <= 0) {
+        throw "Error";
+    }
+    RVector v(ndim);
+    srand((unsigned) time(NULL));
+
+    double fac, rsq, v1, v2, gset1;
+    double gset2 = 0;
+    double it = 0;
+    for (int i = 0; i < ndim; i++) {
+        if (it == 0) {
+            do {
+                v1 = 2 * rand() / double(RAND_MAX) - 1.0;
+                v2 = 2 * rand() / double(RAND_MAX) - 1.0;
+                rsq = v1 * v1 + v2 * v2;
+            } while ((rsq >= 1.0 || rsq == 0.0));
+            fac = sqrt(-2.0 * log(rsq) / rsq);
+            gset1 = v1 * fac;
+            gset2 = v2 * fac;
+            v[i] = gset1;
+            it = 1;
+        } else {
+            v[i] = gset2;
+            it = 0;
+        }
+    }
+    return v;
+}
+
+
+RVector RVector::UniformRandomVector(int ndim, double min, double max) {
+    if (ndim <= 0) {
+        throw "Error!";
+    }
+    RVector result = RVector(ndim);
+    for (int i = 0; i < ndim; i++) {
+        result[i] = (max - min) * (rand() / double(RAND_MAX)) + min;
+    }
+    return result;
+}
+
+RVector RVector::RandomShuffle(RVector v) {
+    srand((unsigned) time(NULL));
+    RVector result(v);
+    for (int i = v.GetLength() - 1; i >= 0; i--) {
+        int index = (rand() % (i + 1));
+        double temp = result[index];
+        result[index] = result[i];
+        result[i] = temp;
+    }
+    return result;
+}
+
+
+double RVector::Max(RVector v) {
+    double r = *max_element(v.vector.begin(), v.vector.end());
+    return r;
+}
+
+double RVector::Min(RVector v) {
+    double r = *max_element(v.vector.begin(), v.vector.end());
+    return r;
+}
+
+double RVector::Sum(RVector v) {
+    double r = 0;
+    int n = v.ndim;
+    for (int i = 0; i < n; i++) {
+        r += v[i];
+    }
+    return r;
+}
+
+double RVector::StadnardDeviation(RVector v) {
+    double result = RVector::Variance(v);
+    result = sqrt(result);
+    return result;
+}
+
+double RVector::Variance(RVector v) {
+    double average = Average(v);
+    double result = 0;
+    for (int i = 0; i < v.ndim; i++) {
+        result += (v[i] - average) * (v[i] - average);
+    }
+    return result / v.ndim;
+}
+
+double RVector::Average(RVector v) {
+    double result = Sum(v);
+    return result / v.ndim;
+}
+
+double RVector::Covariance(RVector x, RVector y) {
+    if (x.GetLength() != y.GetLength()) {
+        throw "error!";
+    }
+    int ndim = x.GetLength();
+    double r = 0;
+    for (int i = 0; i < ndim; i++) {
+        r += (x[i] - Average(x)) * (y[i] - Average(x));
+    }
+    return r;
+}
+
+double RVector::Correlation(RVector x, RVector y) {
+    if (x.GetLength() != y.GetLength()) {
+        throw "error!";
+    }
+    int ndim = x.GetLength();
+    double r;
+    double sigma1 = Variance(x);
+    double sigma2 = Variance(y);
+    double covxy = Covariance(x, y);
+    r = covxy / sqrt(sigma1 * sigma2);
+    return r;
+}
+
+RVector RVector::MinMaxNormalization(RVector x) {
+    int n = x.ndim;
+    RVector r(n);
+    for (int i = 0; i < n; i++) {
+        r[i] = (x[i] - Min(x)) / (Max(x) - Min(x));
+    }
+    return r;
+}
+
+
+RVector RVector::ZeroScoreNormalization(RVector x) {
+    int ndim = x.ndim;
+    RVector r(ndim);
+    for (int i = 0; i < ndim; i++) {
+        r[i] = (x[i] - Average(x)) / StadnardDeviation(x);
+    }
+    return r;
+}
+
+double RVector::Distance(RVector x, RVector y) {
+    if (x.GetLength() != y.GetLength()) {
+        throw "error!";
+    }
+    double r = 0;
+    for (int i = 0; i < x.GetLength(); i++) {
+        r += (x[i] - y[i]) * (x[i] - y[i]);
+    }
+    r = sqrt(r);
+    return r;
+}
+
+
