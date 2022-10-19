@@ -65,6 +65,18 @@ vector<vector<double>> RMatrix::GetMatrix() {
     return matrix;
 }
 
+RVector RMatrix::GetColVector(RMatrix m, int i) {
+    if (i < 0 || i > m.nCols) {
+        throw "Error!";
+    }
+    RVector r(m.nRows);
+    for (int index = 0; index < m.nRows; index++) {
+        r[index] = m[index][i];
+    }
+    return r;
+}
+
+
 vector<double> &RMatrix::operator[](int i) {
     if (i < 0 || i > nRows) {
         throw "Error!";
@@ -183,3 +195,87 @@ void RMatrix::ShowMatrix(vector<vector<double>> m) {
     }
     cout << endl;
 }
+
+
+RVector RMatrix::Max(RMatrix v) {
+    RVector r(v.nCols);
+    for (int i = 0; i < v.nCols; i++) {
+        r[i] = RVector::Max(RMatrix::GetColVector(v, i));
+    }
+    return r;
+}
+
+RVector RMatrix::Min(RMatrix v) {
+    RVector r(v.nCols);
+    for (int i = 0; i < v.nCols; i++) {
+        r[i] = RVector::Min(RMatrix::GetColVector(v, i));
+    }
+    return r;
+}
+
+RVector RMatrix::Sum(RMatrix v) {
+    RVector r(v.nCols);
+    RVector v1(v.nRows);
+
+    for (int i = 0; i < v.nCols; i++) {
+        v1 = RVector::Max(RMatrix::GetColVector(v, i));
+        r[i] = RVector::Sum(v1);
+    }
+    return r;
+}
+
+RVector RMatrix::Average(RMatrix v) {
+    RVector r(v.nCols);
+    for (int i = 0; i < v.nCols; i++) {
+        v[i] = RVector::Average(RMatrix::GetColVector(m, i));
+    }
+    return r;
+}
+
+
+RVector RMatrix::StadnardDeviation(RMatrix v) {
+    RVector r = Variance(v);
+    r = RVector::Sqrt(r);
+    return r;
+}
+
+RVector RMatrix::Variance(RMatrix v) {
+    int ndim = v.nCols;
+    RVector r(ndim);
+    RVector temp(v.nRows);
+    for (int i = 0; i < ndim; i++) {
+        temp = RMatrix::GetColVector(v, i);
+        temp[i] = RVector::Variance(temp);
+    }
+    return temp;
+}
+
+
+RMatrix RMatrix::MinMaxNormalization(RMatrix x) {
+    RMatrix r(x.nRows, x.nCols);
+    RVector min = Min(x);
+    RVector max = Max(x);
+    for (int i = 0; i < x.nRows; i++) {
+        for (int j = 0; j < x.nCols; j++) {
+            r[i][j] = (x[i][j] - min[j]) / (max[j] - min[j]);
+        }
+    }
+    return r;
+}
+
+
+RMatrix RMatrix::ZeroScoreNormalization(RMatrix x) {
+    RMatrix r(x.nRows, x.nCols);
+    RVector average = Average(x);
+    RVector std = StadnardDeviation(x);
+
+    for (int i = 0; i < x.nRows; i++) {
+        for (int j = 0; j < x.nCols; j++) {
+            r[i][j] = (x[i][j] - average[j]) / std[j];
+        }
+    }
+    return r;
+}
+
+
+

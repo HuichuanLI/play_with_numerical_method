@@ -294,3 +294,12 @@ double RVector::Distance(RVector x, RVector y) {
 }
 
 
+RVector RVector::Sqrt(RVector v) {
+    RVector r(v.ndim);
+    for (int i = 0; i < v.ndim; i++) {
+        r[i] = sqrt(v[i]);
+    }
+    return r;
+
+}
+

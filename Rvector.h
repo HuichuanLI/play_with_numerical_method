@@ -80,6 +80,7 @@ public:
 
     static double Distance(RVector x, RVector y);
 
+    static RVector Sqrt(RVector x);
 
 };
 

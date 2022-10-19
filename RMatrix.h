@@ -6,6 +6,7 @@
 #define PLAY_WITH_ALGO_RMATRIX_H
 
 #include <vector>
+#include "Rvector.h"
 
 using namespace std;
 
@@ -52,6 +53,25 @@ public:
 
 
     static void ShowMatrix(vector<vector<double>> m);
+
+
+    static RVector GetColVector(RMatrix m,int i );
+
+    static RVector Max(RMatrix v);
+
+    static RVector Min(RMatrix v);
+
+    static RVector Sum(RMatrix v);
+
+    static RVector Average(RMatrix v);
+
+    static RVector StadnardDeviation(RMatrix v);
+
+    static RVector Variance(RMatrix v);
+
+    static RMatrix MinMaxNormalization(RMatrix x);
+
+    static RMatrix ZeroScoreNormalization(RMatrix x);
 
 
 };
