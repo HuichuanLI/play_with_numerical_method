@@ -55,7 +55,7 @@ public:
     static void ShowMatrix(vector<vector<double>> m);
 
 
-    static RVector GetColVector(RMatrix m,int i );
+    static RVector GetColVector(RMatrix m, int i);
 
     static RVector Max(RMatrix v);
 
@@ -73,7 +73,7 @@ public:
 
     static RMatrix ZeroScoreNormalization(RMatrix x);
 
-
+    static RVector GetRowVector(RMatrix x, int i);
 };
 
 

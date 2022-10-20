@@ -57,7 +57,7 @@ public:
 
     static RVector RandomShuffle(RVector v);
 
-    static double  Average(RVector v);
+    static double Average(RVector v);
 
 
     static double Max(RVector v);
@@ -81,6 +81,10 @@ public:
     static double Distance(RVector x, RVector y);
 
     static RVector Sqrt(RVector x);
+
+    static double DotProduct(RVector x, RVector w);
+
+    RVector operator*(double x);
 
 };
 

@@ -303,3 +303,27 @@ RVector RVector::Sqrt(RVector v) {
 
 }
 
+
+double RVector::DotProduct(RVector x, RVector w) {
+    if (x.GetLength() != w.GetLength()) {
+        throw "error!";
+    }
+    double result = 0;
+    for (int i = 0; i < x.GetLength(); i++) {
+        result += x[i] * w[i];
+    }
+    return result;
+}
+
+
+RVector RVector::operator*(double x) {
+    RVector r1(ndim);
+    for (int i = 0; i < r1.GetLength(); i++) {
+        r1[i] = x * r1[i];
+    }
+    return r1;
+}
+
+
+
+
