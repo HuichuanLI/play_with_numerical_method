@@ -4,6 +4,7 @@
 #include "RMatrix.h"
 #include <tuple>
 #include <cmath>
+#include <iostream>
 
 class NeuralNetWork {
 public:
@@ -18,8 +19,6 @@ public:
     static double ReLu(double x);
 
     static RVector ReLu(RVector x);
-
-    static tuple<RVector, double> StochasticGradientDescent(RMatrix X, RVector D, int epoch);
 
 };
 
@@ -64,7 +63,7 @@ RVector NeuralNetWork::ReLu(RVector x) {
 }
 
 
-static tuple<RVector, double> StochasticGradientDescent(RMatrix X, RVector D, int epoch) {
+tuple<RVector, double> StochasticGradientDescent(RMatrix X, RVector D, int epoch) {
     if (X.GetnRows() != D.GetLength()) {
         throw "Error!";
     }
@@ -73,8 +72,12 @@ static tuple<RVector, double> StochasticGradientDescent(RMatrix X, RVector D, in
     int notes = X.GetnCols();
     RVector x;
     double d;
-    RVector W = RVector::UniformRandomVector(X.GetnRows());
+
+    RVector W = RVector::UniformRandomVector(X.GetnCols()) * 2.0 - 1;
+    RVector::ShowVector(W);
+
     double B = RVector::UniformRandom() - 1;
+
     double v;
     double y;
     double e;
@@ -115,9 +118,21 @@ static RVector ComputeOneLaterNetWork(RMatrix X, tuple<RVector, double> WB) {
 }
 
 
+int main() {
+    vector<vector<double>> x = {{0, 0, 1},
+                                {0, 1, 1,},
+                                {1, 0, 1},
+                                {1, 1, 1}};
+    RMatrix X(x);
+    cout << "X= " << endl;
+    RMatrix::ShowMatrix(X);
+    vector<double> d = {0, 0, 1, 1};
+    RVector D(d);
+    RVector::ShowVector(d);
 
-
-
-
-
-
+    int epoch = 10000;
+    tuple<RVector, double> WB = StochasticGradientDescent(X, D, epoch);
+    RVector Y = ComputeOneLaterNetWork(X, WB);
+    cout << "Y=" << endl;
+    RVector::ShowVector(Y);
+}

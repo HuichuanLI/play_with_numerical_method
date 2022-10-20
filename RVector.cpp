@@ -7,7 +7,7 @@
 #include <iomanip>
 
 RVector::RVector() {
-    ndim = NULL;
+    ndim = 0;
 }
 
 RVector::RVector(int ndim) {
@@ -317,9 +317,19 @@ double RVector::DotProduct(RVector x, RVector w) {
 
 
 RVector RVector::operator*(double x) {
+
     RVector r1(ndim);
     for (int i = 0; i < r1.GetLength(); i++) {
-        r1[i] = x * r1[i];
+        r1[i] = vector[i] * x;
+    }
+    return r1;
+}
+
+
+RVector RVector::operator-(double x) {
+    RVector r1(ndim);
+    for (int i = 0; i < r1.GetLength(); i++) {
+        r1[i] = vector[i] - x;
     }
     return r1;
 }

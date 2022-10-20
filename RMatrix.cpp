@@ -9,8 +9,8 @@
 
 
 RMatrix::RMatrix() {
-    nRows = NULL;
-    nCols = NULL;
+    nRows = 0;
+    nCols = 0;
 }
 
 RMatrix::RMatrix(int ndim) {
@@ -54,11 +54,11 @@ RMatrix::RMatrix(const RMatrix &m) {
 }
 
 int RMatrix::GetnCols() {
-    return nRows;
+    return nCols;
 }
 
 int RMatrix::GetnRows() {
-    return nCols;
+    return nRows;
 }
 
 vector<vector<double>> RMatrix::GetMatrix() {
@@ -227,7 +227,7 @@ RVector RMatrix::Sum(RMatrix v) {
 RVector RMatrix::Average(RMatrix v) {
     RVector r(v.nCols);
     for (int i = 0; i < v.nCols; i++) {
-        v[i] = RVector::Average(RMatrix::GetColVector(m, i));
+        r[i] = RVector::Average(RMatrix::GetColVector(v, i));
     }
     return r;
 }
@@ -279,3 +279,14 @@ RMatrix RMatrix::ZeroScoreNormalization(RMatrix x) {
 
 
 
+
+RVector RMatrix::GetRowVector(RMatrix x, int i){
+    if (i < 0 || i > x.nRows) {
+        throw "Error!";
+    }
+    RVector r(x.nCols);
+    for (int index = 0; index < x.nCols; index++) {
+        r[index] = x[i][index];
+    }
+    return r;
+}
