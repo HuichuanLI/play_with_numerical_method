@@ -335,5 +335,13 @@ RVector RVector::operator-(double x) {
 }
 
 
+RVector RVector::operator/(double x) {
+    RVector r1(ndim);
+    for (int i = 0; i < r1.GetLength(); i++) {
+        r1[i] = vector[i] / x;
+    }
+    return r1;
+}
+
 
 

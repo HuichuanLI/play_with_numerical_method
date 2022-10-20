@@ -88,6 +88,8 @@ public:
 
     RVector operator-(double x);
 
+    RVector operator/(double x);
+
 };
 
 #endif //PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H

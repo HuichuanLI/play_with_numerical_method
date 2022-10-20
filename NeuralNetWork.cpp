@@ -102,6 +102,54 @@ tuple<RVector, double> StochasticGradientDescent(RMatrix X, RVector D, int epoch
     return make_tuple(W, B);
 }
 
+
+tuple<RVector, double> StochasticBatch(RMatrix X, RVector D, int epoch) {
+    if (X.GetnRows() != D.GetLength()) {
+        throw "Error!";
+    }
+    double alpha = 0.9;
+    int ndim = X.GetnRows();
+    int notes = X.GetnCols();
+    RVector x;
+    double d;
+
+    RVector W = RVector::UniformRandomVector(X.GetnCols()) * 2.0 - 1;
+    RVector::ShowVector(W);
+
+    double B = RVector::UniformRandom() - 1;
+
+    double v;
+    double y;
+    double e;
+    double delta;
+    RVector dW(notes);
+    double dB;
+    RVector dWsum(notes);
+    double dBsum;
+
+    for (int j = 0; j < epoch; j++) {
+        dWsum = RVector::ZerosVector(notes);
+        dBsum = 0;
+        for (int i = 0; i < ndim; i++) {
+            x = RMatrix::GetRowVector(X, i);
+            d = D[i];
+            v = RVector::DotProduct(W, x) + B;
+            y = NeuralNetWork::Sigmoid(v);
+            e = d - y;
+            delta = y * (1 - y) * e;
+            dW = x * (alpha * delta);
+            dB = alpha * delta;
+            W = W + dW;
+            B = B + dB;
+        }
+        W = W + dWsum / ndim;
+        B = B + dBsum / ndim;
+
+    }
+
+    return make_tuple(W, B);
+}
+
 static RVector ComputeOneLaterNetWork(RMatrix X, tuple<RVector, double> WB) {
     RVector w = get<0>(WB);
     double B = get<1>(WB);
@@ -135,4 +183,11 @@ int main() {
     RVector Y = ComputeOneLaterNetWork(X, WB);
     cout << "Y=" << endl;
     RVector::ShowVector(Y);
+
+
+
+    tuple<RVector, double> WB1 = StochasticBatch(X, D, epoch);
+    RVector Y1 = ComputeOneLaterNetWork(X, WB);
+    cout << "Y=" << endl;
+    RVector::ShowVector(Y1);
 }
