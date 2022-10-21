@@ -148,6 +148,48 @@ tuple<RVector, double> StochasticBatch(RMatrix X, RVector D, int epoch) {
     return make_tuple(W, B);
 }
 
+
+tuple<RMatrix, RVector, RVector, double> BackPropagationAlgorithm(RMatrix X, RVector D, int notes, int epoch) {
+    if (X.GetnRows() != D.GetLength()) {
+        throw "Error!";
+    }
+    double alpha = 0.9;
+    int ndim = X.GetnRows();
+    RMatrix W1 = RMatrix::UniformRandomMatrix(notes, X.GetnCols());
+    RVector B1 = RVector::UniformRandomVector(notes) * 2 - 1;
+    RVector W2 = RVector::UniformRandomVector(notes) * 2 - 1;
+    double B2 = 2 * RVector::UniformRandom() - 1;
+    RVector x;
+    double d, v2, y2, e2, delta2, dB2;
+    RVector e1, v1, y1, delta1, dB1, dW2;
+    RMatrix dW1;
+    for (int j = 0; j < epoch; j++) {
+        for (int i = 0; i < ndim; i++) {
+            x = RMatrix::GetRowVector(X, i);
+            d = D[i];
+            v1 = W1 * x + B1;
+            y1 = NeuralNetWork::Sigmoid(v1);
+            v2 = RVector::DotProduct(W2, y1) + B2;
+            y2 = NeuralNetWork::Sigmoid(v2);
+            e2 = d - y2;
+            delta2 = y2 * (1 - y2) * e2;
+            e1 = W2 * delta2;
+            delta1 = (y1 * ((y1 - 1.0) * -1.0)) * e1;
+            dW1 = RMatrix::Outerproduct(delta1, x) * alpha;
+            dB1 = delta1 * alpha;
+            W1 = W1 + dW1;
+            B1 = B1 + dB1;
+            dW2 = y1 * (alpha * delta2);
+            dB2 = alpha * delta2;
+            W2 = W2 + dW2;
+            B2 = B2 + dB2;
+        }
+    }
+    return make_tuple(W1, B1, W2, B2);
+
+
+}
+
 static RVector ComputeOneLaterNetWork(RMatrix X, tuple<RVector, double> WB) {
     RVector w = get<0>(WB);
     double B = get<1>(WB);
@@ -181,7 +223,6 @@ int main() {
     RVector Y = ComputeOneLaterNetWork(X, WB);
     cout << "Y=" << endl;
     RVector::ShowVector(Y);
-
 
 
     tuple<RVector, double> WB1 = StochasticBatch(X, D, epoch);

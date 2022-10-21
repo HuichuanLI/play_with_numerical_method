@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include <iomanip>
+#include "RMatrix.h"
 
 RVector::RVector() {
     ndim = 0;
@@ -315,12 +316,33 @@ double RVector::DotProduct(RVector x, RVector w) {
     return result;
 }
 
+RMatrix RVector::OutProduct(RVector m1, RVector m2) {
+    RMatrix reuslt(m1.GetLength(), m2.GetLength());
+    for (int i = 0; i < m1.GetLength(); i++) {
+        for (int j = 0; j < m2.GetLength(); j++) {
+
+            reuslt[i][j] = m1[i] * m2[j];
+        }
+    }
+    return reuslt;
+}
+
 
 RVector RVector::operator*(double x) {
 
     RVector r1(ndim);
     for (int i = 0; i < r1.GetLength(); i++) {
         r1[i] = vector[i] * x;
+    }
+    return r1;
+}
+
+
+RVector RVector::operator*(RVector x) {
+
+    RVector r1(ndim);
+    for (int i = 0; i < r1.GetLength(); i++) {
+        r1[i] = vector[i] * x[i];
     }
     return r1;
 }

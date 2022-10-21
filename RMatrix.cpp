@@ -278,9 +278,7 @@ RMatrix RMatrix::ZeroScoreNormalization(RMatrix x) {
 }
 
 
-
-
-RVector RMatrix::GetRowVector(RMatrix x, int i){
+RVector RMatrix::GetRowVector(RMatrix x, int i) {
     if (i < 0 || i > x.nRows) {
         throw "Error!";
     }
@@ -289,4 +287,86 @@ RVector RMatrix::GetRowVector(RMatrix x, int i){
         r[index] = x[i][index];
     }
     return r;
+}
+
+
+RMatrix RMatrix::UniformRandomMatrix(int rows, int cols) {
+
+    RMatrix m(rows, cols);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            m[i][j] = RVector::UniformRandom();
+        }
+    }
+    return m;
+}
+
+RVector operator*(RMatrix m1, RVector m2) {
+    if (m1.nCols != m2.GetLength()) {
+        throw "Error";
+    }
+
+    double temp;
+    RVector reuslt(m1.nRows);
+    for (int i = 0; i < m1.nRows; i++) {
+        for (int j = 0; j < m2.GetLength(); j++) {
+            temp = 0;
+            for (int k = 0; k < m1.nCols; k++) {
+                temp += m1[i][j] * m2[k];
+            }
+            reuslt[i] = temp;
+        }
+    }
+    return reuslt;
+}
+
+
+RMatrix operator+(RMatrix m1, RVector m2) {
+    if (m1.nRows != m2.GetLength()) {
+        throw "Error";
+    }
+
+    double temp;
+    RMatrix reuslt(m1.nRows, m1.nCols);
+    for (int i = 0; i < m1.nRows; i++) {
+        for (int j = 0; j < m1.nCols; j++) {
+            m1[i][j] = m1[i][j] + m2[i];
+        }
+    }
+    return reuslt;
+}
+
+
+RMatrix operator*(RVector m1, RVector m2) {
+    RMatrix reuslt(m1.GetLength(), m2.GetLength());
+    for (int i = 0; i < m1.GetLength(); i++) {
+        for (int j = 0; j < m2.GetLength(); j++) {
+
+            reuslt[i][j] = m1[i] * m2[j];
+        }
+    }
+    return reuslt;
+}
+
+
+RMatrix RMatrix::Outerproduct(RVector m1, RVector m2) {
+
+    RMatrix m(m1.GetLength(), m2.GetLength());
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            m[i][j] = RVector::UniformRandom();
+        }
+    }
+    return m;
+}
+
+RMatrix operator*(RMatrix m1, double m2) {
+
+    RMatrix m(m1.nRows, m1.nCols);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            m[i][j] = m1[i][j] * m2;
+        }
+    }
+    return m;
 }

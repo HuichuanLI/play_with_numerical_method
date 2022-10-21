@@ -74,6 +74,21 @@ public:
     static RMatrix ZeroScoreNormalization(RMatrix x);
 
     static RVector GetRowVector(RMatrix x, int i);
+
+    static RMatrix UniformRandomMatrix(int rows, int cols);
+
+
+    friend RVector operator*(RMatrix m1, RVector m2);
+
+    friend RMatrix operator*(RMatrix m1, double m2);
+
+    friend RMatrix operator+(RMatrix m1, RVector m2);
+
+    friend RMatrix operator*(RVector m1, RVector m2);
+
+    static RMatrix Outerproduct(RVector m1, RVector m2);
+
+
 };
 
 

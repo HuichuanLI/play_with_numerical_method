@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 
+
 using namespace std;
 #ifndef PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H
 #define PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H
@@ -84,7 +85,10 @@ public:
 
     static double DotProduct(RVector x, RVector w);
 
+
     RVector operator*(double x);
+
+    RVector operator*(RVector x);
 
     RVector operator-(double x);
 
