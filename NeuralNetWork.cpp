@@ -74,7 +74,6 @@ tuple<RVector, double> StochasticGradientDescent(RMatrix X, RVector D, int epoch
     double d;
 
     RVector W = RVector::UniformRandomVector(X.GetnCols()) * 2.0 - 1;
-    RVector::ShowVector(W);
 
     double B = RVector::UniformRandom() - 1;
 
@@ -114,7 +113,6 @@ tuple<RVector, double> StochasticBatch(RMatrix X, RVector D, int epoch) {
     double d;
 
     RVector W = RVector::UniformRandomVector(X.GetnCols()) * 2.0 - 1;
-    RVector::ShowVector(W);
 
     double B = RVector::UniformRandom() - 1;
 
