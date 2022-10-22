@@ -11,6 +11,10 @@
 class SolutionofLinearEquations {
 public:
     static RVector BackSubstitution(RMatrix A, RVector B);
+
+    static RVector Thomas(RVector Up, RVector Dia, RVector Down, RVector B);
+
+    static RVector Gauss(RMatrix A, RVector B);
 };
 
 #endif //PLAY_WITH_ALGO_SOLUTIONOFLINEAREQUATION_H

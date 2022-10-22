@@ -99,6 +99,9 @@ public:
 
     RVector operator-(double x);
 
+
+    RVector operator-(RVector x);
+
     RVector operator/(double x);
 
 };

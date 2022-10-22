@@ -88,6 +88,7 @@ public:
 
     static RMatrix Outerproduct(RVector m1, RVector m2);
 
+    static RMatrix CatCols(RMatrix A, RVector B);
 
 };
 

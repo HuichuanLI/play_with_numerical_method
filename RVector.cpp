@@ -358,6 +358,15 @@ RVector RVector::operator-(double x) {
 }
 
 
+RVector RVector::operator-(RVector x) {
+    RVector r1(ndim);
+    for (int i = 0; i < r1.GetLength(); i++) {
+        r1[i] = vector[i] - x[i];
+    }
+    return r1;
+}
+
+
 RVector RVector::operator/(double x) {
     RVector r1(ndim);
     for (int i = 0; i < r1.GetLength(); i++) {

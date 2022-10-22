@@ -379,3 +379,20 @@ RMatrix operator*(RMatrix m1, double m2) {
     }
     return m;
 }
+
+RMatrix CatCols(RMatrix A, RVector B) {
+    if (A.GetnRows() != B.GetLength()) {
+        throw "Error!";
+    }
+    RMatrix m(A.GetnRows(), A.GetnCols() + 1);
+    for (int i = 0; i < A.GetnRows(); i++) {
+        for (int j = 0; j <= A.GetnCols(); j++) {
+            if (j < A.GetnCols()) {
+                m[i][j] = A[i][j];
+            } else {
+                m[i][j] = B[i];
+            }
+        }
+    }
+    return m;
+}
