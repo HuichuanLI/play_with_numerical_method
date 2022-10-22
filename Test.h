@@ -25,4 +25,10 @@ double Fun3(RVector x) {
     return (x[0] - x[1]) / (x[0] * x[0] + x[1] * x[1] + 2);
 }
 
+
+double Fun4(double x) {
+    return -x * x / 10 - sin(x);
+}
+
+
 #endif //PLAY_WITH_ALGO_TEST_H
