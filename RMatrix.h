@@ -1,14 +1,14 @@
 //
 // Created by lhc456 on 2022/10/16.
 //
-
-#ifndef PLAY_WITH_ALGO_RMATRIX_H
-#define PLAY_WITH_ALGO_RMATRIX_H
-
 #include <vector>
 #include "Rvector.h"
 
 using namespace std;
+
+#ifndef PLAY_WITH_ALGO_RMATRIX_H
+#define PLAY_WITH_ALGO_RMATRIX_H
+
 
 class RMatrix {
 private:
@@ -33,7 +33,6 @@ public:
     vector<vector<double>> GetMatrix();
 
     vector<double> &operator[](int i);
-
 
     friend RMatrix operator+(RMatrix m1, RMatrix m2);
 
@@ -77,6 +76,7 @@ public:
 
     static RMatrix UniformRandomMatrix(int rows, int cols);
 
+    void SetRowVector(int i, RVector v);
 
     friend RVector operator*(RMatrix m1, RVector m2);
 

@@ -1,13 +1,18 @@
 //
 // Created by lhc456 on 2022/10/16.
 //
+
+
+
 #include <vector>
 #include <algorithm>
 
 
-using namespace std;
 #ifndef PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H
 #define PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H
+
+
+using namespace std;
 
 class RVector {
 private:
@@ -51,6 +56,8 @@ public:
     static double UniformRandom();
 
     static RVector UniformRandomVector(int ndim);
+
+    static RVector UniformRandomVector(int ndim, int epoch);
 
     static RVector NormalRandomVector(int ndim);
 

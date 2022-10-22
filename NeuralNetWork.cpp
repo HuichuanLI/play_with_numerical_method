@@ -155,7 +155,9 @@ tuple<RMatrix, RVector, RVector, double> BackPropagationAlgorithm(RMatrix X, RVe
     }
     double alpha = 0.9;
     int ndim = X.GetnRows();
-    RMatrix W1 = RMatrix::UniformRandomMatrix(notes, X.GetnCols());
+    RMatrix W1 = RMatrix::UniformRandomMatrix(notes, X.GetnCols()) * 2 ;
+    RMatrix::ShowMatrix(W1);
+
     RVector B1 = RVector::UniformRandomVector(notes) * 2 - 1;
     RVector W2 = RVector::UniformRandomVector(notes) * 2 - 1;
     double B2 = 2 * RVector::UniformRandom() - 1;
@@ -205,6 +207,30 @@ static RVector ComputeOneLaterNetWork(RMatrix X, tuple<RVector, double> WB) {
     return Y;
 }
 
+static RVector ComputeTwoLaterNetWork(RMatrix X, tuple<RMatrix, RVector, RVector, double> WB) {
+    RMatrix W1 = get<0>(WB);
+    RVector B1 = get<1>(WB);
+    RVector W2 = get<2>(WB);
+    double B2 = get<3>(WB);
+
+    int ndim = X.GetnRows();
+    RVector x;
+    double d, v2, y2;
+
+    RVector v1, y1;
+    RVector Y(ndim);
+
+    for (int i = 0; i < ndim; i++) {
+        x = RMatrix::GetRowVector(X, i);
+        v1 = W1 * x + B1;
+        y1 = NeuralNetWork::Sigmoid(v1);
+        v2 = RVector::DotProduct(W2, y1) + B2;
+        y2 = NeuralNetWork::Sigmoid(v2);
+        Y[i] = y2;
+    }
+    return Y;
+}
+
 
 int main() {
     vector<vector<double>> x = {{0, 0, 1},
@@ -229,4 +255,11 @@ int main() {
     RVector Y1 = ComputeOneLaterNetWork(X, WB);
     cout << "Y=" << endl;
     RVector::ShowVector(Y1);
+
+    int notes = 4;
+
+    tuple<RMatrix, RVector, RVector, double> WB2 = BackPropagationAlgorithm(X, D, notes, epoch);
+    RVector Y2 = ComputeTwoLaterNetWork(X, WB2);
+    cout << "Y=" << endl;
+    RVector::ShowVector(Y2);
 }

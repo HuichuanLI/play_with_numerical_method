@@ -130,13 +130,25 @@ double RVector::UniformRandom() {
     return rand() / double(RAND_MAX);
 }
 
-
 RVector RVector::UniformRandomVector(int ndim) {
     if (ndim <= 0) {
         throw "Error!";
     }
     RVector result(ndim);
     srand((unsigned) time(NULL));
+
+    for (int i = 0; i < ndim; i++) {
+        result[i] = rand() / double(RAND_MAX);
+    }
+    return result;
+}
+
+RVector RVector::UniformRandomVector(int ndim, int epoch) {
+    if (ndim <= 0) {
+        throw "Error!";
+    }
+    RVector result(ndim);
+    srand((unsigned) time(NULL) + epoch);
 
     for (int i = 0; i < ndim; i++) {
         result[i] = rand() / double(RAND_MAX);
@@ -314,17 +326,6 @@ double RVector::DotProduct(RVector x, RVector w) {
         result += x[i] * w[i];
     }
     return result;
-}
-
-RMatrix RVector::OutProduct(RVector m1, RVector m2) {
-    RMatrix reuslt(m1.GetLength(), m2.GetLength());
-    for (int i = 0; i < m1.GetLength(); i++) {
-        for (int j = 0; j < m2.GetLength(); j++) {
-
-            reuslt[i][j] = m1[i] * m2[j];
-        }
-    }
-    return reuslt;
 }
 
 

@@ -84,6 +84,7 @@ vector<double> &RMatrix::operator[](int i) {
     return matrix[i];
 }
 
+
 RMatrix operator+(RMatrix m1, RMatrix m2) {
     if (m1.nRows != m2.nRows && m1.nCols != m2.nCols) {
         throw "Error!";
@@ -289,14 +290,22 @@ RVector RMatrix::GetRowVector(RMatrix x, int i) {
     return r;
 }
 
+void RMatrix::SetRowVector(int i, RVector v) {
+    if (i < 0 || i > v.GetLength()) {
+        throw "Error!";
+    }
+
+    for (int index = 0; index < v.GetLength(); index++) {
+        matrix[i][index] = v[index];
+    }
+}
+
 
 RMatrix RMatrix::UniformRandomMatrix(int rows, int cols) {
 
     RMatrix m(rows, cols);
     for (int i = 0; i < m.nRows; i++) {
-        for (int j = 0; j < m.nCols; j++) {
-            m[i][j] = RVector::UniformRandom();
-        }
+        m.SetRowVector(i, RVector::UniformRandomVector(m.nCols, i));
     }
     return m;
 }
@@ -354,7 +363,7 @@ RMatrix RMatrix::Outerproduct(RVector m1, RVector m2) {
     RMatrix m(m1.GetLength(), m2.GetLength());
     for (int i = 0; i < m.nRows; i++) {
         for (int j = 0; j < m.nCols; j++) {
-            m[i][j] = RVector::UniformRandom();
+            m[i][j] = m1[i] * m2[j];
         }
     }
     return m;
