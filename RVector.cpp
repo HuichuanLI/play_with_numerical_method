@@ -39,6 +39,10 @@ vector<double> RVector::GetVector() {
     return vector;
 }
 
+RVector RVector::clone() {
+    return RVector(vector);
+}
+
 double &RVector::operator[](int i) {
     if (i < 0 || i > ndim) {
         throw "Erroro!";

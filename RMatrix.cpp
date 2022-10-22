@@ -396,3 +396,5 @@ RMatrix CatCols(RMatrix A, RVector B) {
     }
     return m;
 }
+
+

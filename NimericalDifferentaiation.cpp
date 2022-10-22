@@ -4,6 +4,7 @@
 
 #include "NimericalDifferentaiation.h"
 #include <cmath>
+#include <iostream>
 
 double NumericalDifferentaitioan::CentralDifferecne(Function f, double x0, double dx) {
     double df;
@@ -38,4 +39,43 @@ double NumericalDifferentaitioan::CentralDifferenceLimits(Function f, double x0,
         df0 = df1;
     }
     return df0;
+}
+
+
+RVector NumericalDifferentaitioan::Gradient(MultiVarFunction f, RVector x0, double dx) {
+    int n = x0.GetLength();
+    RVector G(n);
+    std::cout << n << std::endl;
+    RVector xr = x0;
+    RVector xl = x0;
+    for (int i = 0; i < n; i++) {
+        xr[i] += dx;
+        xl[i] -= dx;
+        G[i] = (f(xr) - f(xl)) / 2 / dx;
+        xr[i] -= dx;
+        xl[i] += dx;
+    }
+    return G;
+}
+
+
+RMatrix NumericalDifferentaitioan::Hessian(MultiVarFunction f, RVector x0, double dx) {
+    int n = x0.GetLength();
+    RVector xr = x0.clone();
+    RVector xl = x0.clone();
+    RVector xlb = x0.clone();
+    RVector xrb = x0.clone();
+    RVector xrt = x0.clone();
+    RMatrix H = RMatrix(n, n);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (i == j) {
+                xr[i] += dx;
+                xl[i] -= dx;
+                H[i][i] = (f(xr) - 2 * f(x0) + f(xl)) / dx / dx;
+
+            }
+        }
+    }
 }

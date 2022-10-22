@@ -104,6 +104,8 @@ public:
 
     RVector operator/(double x);
 
+    RVector clone();
+
 };
 
 #endif //PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H

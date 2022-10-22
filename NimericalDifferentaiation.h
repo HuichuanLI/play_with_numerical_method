@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Rvector.h"
+#include "RMatrix.h"
 
 class NumericalDifferentaitioan {
 public :
@@ -15,4 +16,9 @@ public :
 
     static double CentralDifferenceLimits(Function f, double x0, double tol);
 
+    typedef double (*MultiVarFunction)(RVector);
+
+    static RVector Gradient(MultiVarFunction f, RVector x0, double dx);
+
+    static RMatrix Hessian(MultiVarFunction f, RVector x0, double dx);
 };
