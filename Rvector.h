@@ -106,6 +106,7 @@ public:
 
     RVector clone();
 
+    double Norm();
 };
 
 #endif //PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H

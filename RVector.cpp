@@ -88,6 +88,14 @@ RVector RVector::Pow(RVector v, double x) {
     return r;
 }
 
+double RVector::Norm() {
+    double sum = 0;
+    for (int i = 0; i < ndim; i++) {
+        sum += pow(vector[i], 2);
+    }
+    return sqrt(sum);
+}
+
 RVector RVector::LineSpace(double start, double end, int n) {
     RVector r(n + 1);
     for (int i = 0; i < r.ndim; i++) {
