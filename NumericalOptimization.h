@@ -19,6 +19,8 @@ double QuadMin(Function f, double a, double b, double x0);
 
 RVector MultivVarGradientMin(MultiVarFunction f, RVector x0);
 
+RVector MultivarNewtonMin(MultiVarFunction f, RVector x0);
+
 #endif //PLAY_WITH_ALGO_NUMERICALOPTIMIZATION_H
 
 

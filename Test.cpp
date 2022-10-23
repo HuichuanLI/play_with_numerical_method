@@ -59,4 +59,16 @@ int main() {
     cout << "fixed" << setprecision(4) << x << endl;
     cout << "f=" << endl;
     cout << fixed << setprecision(4) << f << endl;
+
+    vector<double> x2 = {-3, -2};
+    RVector X2(x2);
+    RVector::ShowVector(X2);
+
+    RVector X3 = MultivVarGradientMin(Fun5, X2);
+    RVector::ShowVector(X3);
+
+    cout << "f2=" << endl;
+    f = Fun5(X3);
+    cout << "fixed" << setprecision(4) << f << endl;
 }
+

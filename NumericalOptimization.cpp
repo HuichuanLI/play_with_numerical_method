@@ -4,6 +4,8 @@
 
 #include "NumericalOptimization.h"
 #include "NimericalDifferentaiation.h"
+#include "SolutionofLinearEquation.h"
+
 
 double GoldenMin(Function f, double a, double b) {
     double delta = 1E-6;
@@ -100,6 +102,7 @@ RVector MultivVarGradientMin(MultiVarFunction f, RVector x0) {
         h = 1;
         xr = x1;
         xs = x1 + p * h / 2;
+        xt = x1 + p * h;
         fr = f(xr);
         fs = f(xs);
         ft = f(xt);
@@ -149,3 +152,22 @@ RVector MultivVarGradientMin(MultiVarFunction f, RVector x0) {
     return x2;
 }
 
+
+RVector MultivarNewtonMin(MultiVarFunction f, RVector v0) {
+    double dx = 1E-4;
+    RVector x1;
+    RVector x2 = v0;
+    RVector v;
+    RVector B;
+    double tol = 1E-4;
+    double er;
+    do {
+        x1 = x2;
+        B = NumericalDifferentaitioan::Gradient(f, x1, dx);
+        RMatrix A = NumericalDifferentaitioan::Hessian(f, x1, dx);
+        v = SolutionofLinearEquations::Gauss(A, B);
+        er = v.Norm();
+        x2 = x1 - v;
+    } while (er > tol)
+    return x2;
+}

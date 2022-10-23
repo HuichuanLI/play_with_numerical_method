@@ -31,4 +31,8 @@ double Fun4(double x) {
 }
 
 
+double Fun5(RVector x) {
+    return (x[0] - x[1]) / (x[0] * x[0] + x[1] * x[1] + 2);
+}
+
 #endif //PLAY_WITH_ALGO_TEST_H
