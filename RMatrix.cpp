@@ -397,4 +397,23 @@ RMatrix CatCols(RMatrix A, RVector B) {
     return m;
 }
 
+RMatrix replace(RMatrix A, int i, RVector v) {
+    if (i < 0 || i > A.GetnRows()) {
+        throw "error!";
+    }
+    RMatrix res = RMatrix(A.GetnRows(), A.GetnCols());
+    for (int index = 0; index < A.GetnRows(); index++) {
+        for (int j = 0; j <= A.GetnCols(); j++) {
+            if (i == index) {
+                res[i][j] = v[j];
+            } else {
+                res[i][j] = A[i][j];
+            }
+        }
+    }
+    return res;
+}
+
+
+
 

@@ -168,6 +168,6 @@ RVector MultivarNewtonMin(MultiVarFunction f, RVector v0) {
         v = SolutionofLinearEquations::Gauss(A, B);
         er = v.Norm();
         x2 = x1 - v;
-    } while (er > tol)
+    } while (er > tol);
     return x2;
 }

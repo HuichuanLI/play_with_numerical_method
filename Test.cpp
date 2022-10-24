@@ -7,6 +7,7 @@
 #include "Test.h"
 #include "NimericalDifferentaiation.h"
 #include "NumericalOptimization.h"
+#include "CurvingFitting.h"
 
 using namespace std;
 
@@ -46,29 +47,32 @@ int main() {
 //    RVector X0(x2);
 //    RVector G = NumericalDifferentaitioan::Gradient(Fun3, X0, dx);
 //    RVector::ShowVector(G);
-    double a = 0;
-    double b = 4;
-    double x;
-    double g;
-    double f;
-    x = GoldenMin(Fun4, a, b);
-    g = Fun4(x);
-    f = -g;
-    cout << "x=" << endl;
+//    double a = 0;
+//    double b = 4;
+//    double x;
+//    double g;
+//    double f;
+//    x = GoldenMin(Fun4, a, b);
+//    g = Fun4(x);
+//    f = -g;
+//    cout << "x=" << endl;
+//
+//    cout << "fixed" << setprecision(4) << x << endl;
+//    cout << "f=" << endl;
+//    cout << fixed << setprecision(4) << f << endl;
 
-    cout << "fixed" << setprecision(4) << x << endl;
-    cout << "f=" << endl;
-    cout << fixed << setprecision(4) << f << endl;
 
-    vector<double> x2 = {-3, -2};
-    RVector X2(x2);
-    RVector::ShowVector(X2);
+    vector<double> x1 = {-1, 0, 1, 2, 3, 4, 5, 6};
+    vector<double> y1 = {10, 9, 7, 5, 4, 3, 0, -1};
 
-    RVector X3 = MultivVarGradientMin(Fun5, X2);
-    RVector::ShowVector(X3);
+    RVector X(x1);
+    RVector Y(y1);
+    RVector R = LineFitting(X, Y);
 
-    cout << "f2=" << endl;
-    f = Fun5(X3);
-    cout << "fixed" << setprecision(4) << f << endl;
+    RVector::ShowVector(R);
+
+
+    
+
 }
 

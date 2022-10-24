@@ -90,6 +90,8 @@ public:
 
     static RMatrix CatCols(RMatrix A, RVector B);
 
+    static RMatrix Replace(RMatrix A, int i, RVector v);
+
 };
 
 
