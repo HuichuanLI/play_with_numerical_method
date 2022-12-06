@@ -415,5 +415,46 @@ RMatrix replace(RMatrix A, int i, RVector v) {
 }
 
 
+RMatrix RMatrix::IdentityMatrix(int nRows, int nCols) {
+    RMatrix m(nRows, nCols);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            if (i == j) {
+                m[i][j] = 1;
+            }
+        }
+    }
+    return m;
+}
 
+RMatrix RMatrix::IdentityMatrix(int ndim) {
+    int nRows = ndim;
+    int nCols = ndim;
+    RMatrix m(nRows, nCols);
+    for (int i = 0; i < m.nRows; i++) {
+        m[i][i] = 1;
+    }
+    return m;
+}
+
+RMatrix RMatrix::ConvertToRow(RVector v)
+{
+    int ndim = v.GetLength();
+    RMatrix m(1, ndim);
+    for (int i = 0; i < ndim; i++)
+    {
+        m[0][i] = v[i];
+    }
+    return m;
+}
+RMatrix RMatrix::ConvertToCol(RVector v)
+{
+    int ndim = v.GetLength();
+    RMatrix m(ndim, 1);
+    for (int i = 0; i < ndim; i++)
+    {
+        m[i][0] = v[i];
+    }
+    return m;
+}
 

@@ -1,16 +1,10 @@
-//
-// Created by lhc456 on 2022/10/16.
-//
+#pragma once
 
-
-
-#include <vector>
+#include<vector>
+#include <cmath>
+#include <iostream>
+#include <iomanip>
 #include <algorithm>
-
-
-#ifndef PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H
-#define PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H
-
 
 using namespace std;
 
@@ -31,9 +25,43 @@ public:
 
     std::vector<double> GetVector();
 
-    double &operator[](int i);
+    static RVector ZerosVector(int ndim);
+
+    static RVector OnesVector(int ndim);
+
+    static RVector LineSpace(double start, double end, int n);
+
+    static RVector LineRange(double start, double inter, double end);
 
     friend RVector operator+(RVector v1, RVector v2);
+
+    friend RVector operator-(RVector v1, RVector v2);
+
+    friend RVector operator*(RVector v1, RVector v2);
+
+    friend RVector operator/(RVector v1, RVector v2);
+
+    friend RVector operator+(RVector v, double r);
+
+    friend RVector operator+(double r, RVector v);
+
+    friend RVector operator-(RVector v, double r);
+
+    friend RVector operator-(double r, RVector v);
+
+    friend RVector operator*(RVector v, double r);
+
+    friend RVector operator*(double r, RVector v);
+
+    friend RVector operator/(RVector v, double r);
+
+    friend RVector operator/(double r, RVector v);
+
+    double &operator[](int i);
+
+    RVector operator-();
+
+    RVector operator+();
 
     static RVector Exp(RVector v);
 
@@ -41,32 +69,27 @@ public:
 
     static RVector Pow(RVector v, double x);
 
-    static RVector LineSpace(double start, double end, int n);
+    static RVector Sqrt(RVector v);
 
-    static RVector LineSpace(double start, double inter, double n);
-
+    static RVector Abs(RVector v);
 
     static void ShowVector(RVector v);
 
-    static void ShowVector(std::vector<double> v);
+    static double Norm(RVector v);
 
-    static RVector ZerosVector(int n);
-
-
-    static double UniformRandom();
-
-    static RVector UniformRandomVector(int ndim);
-
-    static RVector UniformRandomVector(int ndim, int epoch);
-
-    static RVector NormalRandomVector(int ndim);
-
-    static RVector UniformRandomVector(int ndim, double min, double max);
-
-    static RVector RandomShuffle(RVector v);
+    static double NormInf(RVector v);
 
     static double Average(RVector v);
 
+    static double DotProduct(RVector v1, RVector v2);
+
+    static RVector RandomShuffle(RVector v);
+
+    static RVector UniformRandomVector(int ndim);
+
+    static RVector NormalRandomVector(int ndim);
+
+    static void ShowVector(std::vector<double> v);
 
     static double Max(RVector v);
 
@@ -74,7 +97,7 @@ public:
 
     static double Sum(RVector v);
 
-    static double StadnardDeviation(RVector v);
+    static double StandardDeviation(RVector v);
 
     static double Variance(RVector v);
 
@@ -82,31 +105,9 @@ public:
 
     static double Correlation(RVector x, RVector y);
 
-    static RVector MinMaxNormalization(RVector x);
+    static RVector MinMaxNormalization(RVector v);
 
-    static RVector ZeroScoreNormalization(RVector x);
+    static RVector ZeroScoreNormalization(RVector v);
 
     static double Distance(RVector x, RVector y);
-
-    static RVector Sqrt(RVector x);
-
-    static double DotProduct(RVector x, RVector w);
-
-
-    RVector operator*(double x);
-
-    RVector operator*(RVector x);
-
-    RVector operator-(double x);
-
-
-    RVector operator-(RVector x);
-
-    RVector operator/(double x);
-
-    RVector clone();
-
-    double Norm();
 };
-
-#endif //PLAY_WITH_NUMERICAL_METHOD_RVECTOR_H

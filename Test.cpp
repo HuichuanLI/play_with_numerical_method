@@ -71,8 +71,16 @@ int main() {
 
     RVector::ShowVector(R);
 
+    vector<double> x = {-3, 0, 2, 4};
+    vector<double> y = {3, 1, 1, 3};
 
-    
+    RVector X1(x);
+    RVector Y1(y);
+
+    int deg = 2;
+
+    RVector r = PolynomialFitting(X1, Y1, 2);
+
 
 }
 

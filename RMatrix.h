@@ -92,6 +92,14 @@ public:
 
     static RMatrix Replace(RMatrix A, int i, RVector v);
 
+    static RMatrix IdentityMatrix(int nRows, int nCols);
+
+    static RMatrix IdentityMatrix(int ndim);
+
+    static RMatrix ConvertToRow(RVector v);
+
+    static RMatrix ConvertToCol(RVector v);
+
 };
 
 
