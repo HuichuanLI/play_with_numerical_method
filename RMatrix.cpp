@@ -1,23 +1,16 @@
-//
-// Created by lhc456 on 2022/10/16.
-//
-
 #include "RMatrix.h"
-#include <cmath>
-#include <iostream>
-#include <iomanip>
 
+using namespace std;
 
 RMatrix::RMatrix() {
-    nRows = 0;
-    nCols = 0;
+    nRows = NULL;
+    nCols = NULL;
 }
 
 RMatrix::RMatrix(int ndim) {
     nRows = ndim;
     nCols = ndim;
     vector<vector<double>> matrix(nRows, vector<double>(nCols));
-
     for (int i = 0; i < nRows; i++) {
         for (int j = 0; j < nCols; j++) {
             matrix[i][j] = 0;
@@ -29,7 +22,6 @@ RMatrix::RMatrix(int ndim) {
 RMatrix::RMatrix(int nRows, int nCols) {
     this->nRows = nRows;
     this->nCols = nCols;
-
     vector<vector<double>> matrix(nRows, vector<double>(nCols));
     for (int i = 0; i < nRows; i++) {
         for (int j = 0; j < nCols; j++) {
@@ -53,37 +45,17 @@ RMatrix::RMatrix(const RMatrix &m) {
     matrix = m.matrix;
 }
 
-int RMatrix::GetnCols() {
-    return nCols;
-}
-
 int RMatrix::GetnRows() {
     return nRows;
+}
+
+int RMatrix::GetnCols() {
+    return nCols;
 }
 
 vector<vector<double>> RMatrix::GetMatrix() {
     return matrix;
 }
-
-RVector RMatrix::GetColVector(RMatrix m, int i) {
-    if (i < 0 || i > m.nCols) {
-        throw "Error!";
-    }
-    RVector r(m.nRows);
-    for (int index = 0; index < m.nRows; index++) {
-        r[index] = m[index][i];
-    }
-    return r;
-}
-
-
-vector<double> &RMatrix::operator[](int i) {
-    if (i < 0 || i > nRows) {
-        throw "Error!";
-    }
-    return matrix[i];
-}
-
 
 RMatrix operator+(RMatrix m1, RMatrix m2) {
     if (m1.nRows != m2.nRows && m1.nCols != m2.nCols) {
@@ -93,7 +65,19 @@ RMatrix operator+(RMatrix m1, RMatrix m2) {
     for (int i = 0; i < m1.nRows; i++) {
         for (int j = 0; j < m1.nCols; j++) {
             result[i][j] = m1[i][j] + m2[i][j];
+        }
+    }
+    return result;
+}
 
+RMatrix operator-(RMatrix m1, RMatrix m2) {
+    if (m1.nRows != m2.nRows && m1.nCols != m2.nCols) {
+        throw "Error!";
+    }
+    RMatrix result(m1.nRows, m1.nCols);
+    for (int i = 0; i < m1.nRows; i++) {
+        for (int j = 0; j < m1.nCols; j++) {
+            result[i][j] = m1[i][j] - m2[i][j];
         }
     }
     return result;
@@ -103,60 +87,33 @@ RMatrix operator*(RMatrix m1, RMatrix m2) {
     if (m1.nCols != m2.nRows) {
         throw "Error";
     }
-
-    double temp;
-    RMatrix reuslt(m1.nRows, m2.nCols);
+    double tmp;
+    RMatrix result(m1.nRows, m2.nCols);
     for (int i = 0; i < m1.nRows; i++) {
         for (int j = 0; j < m2.nCols; j++) {
-            temp = 0;
+            tmp = 0;
             for (int k = 0; k < m1.nCols; k++) {
-                temp += m1[i][j] * m2[k][j];
+                tmp += m1[i][k] * m2[k][j];
             }
-            reuslt[i][j] = temp;
+            result[i][j] = tmp;
         }
     }
-    return reuslt;
+    return result;
 }
 
-
-RMatrix RMatrix::Transpose(RMatrix m) {
-    RMatrix r(m.nCols, m.nRows);
-    for (int i = 0; i < r.nRows; i++) {
-        for (int j = 0; j < r.nCols; j++) {
-            r[j][i] = m[i][j];
-        }
-    }
-    return r;
-}
-
-RMatrix RMatrix::TriU(RMatrix m) {
-    RMatrix r(m.nCols, m.nCols);
-
+RMatrix RMatrix::ZerosMatrix(int ndim) {
+    int nRows = ndim;
+    int nCols = ndim;
+    RMatrix m(nRows, nCols);
     for (int i = 0; i < m.nRows; i++) {
         for (int j = 0; j < m.nCols; j++) {
-            if (i <= j) {
-                r[i][j] = m[i][j];
-            } else {
-                r[i][j] = 0;
-            }
+            m[i][j] = 0;
         }
     }
-    return r;
+    return m;
 }
-
-RMatrix RMatrix::SwapRow(RMatrix mat, int m, int n) {
-    double temp = 0;
-    for (int i = 0; i < mat.nCols; i++) {
-        temp = mat[m][i];
-        mat[m][i] = mat[n][i];
-        mat[n][i] = temp;
-    }
-    return mat;
-}
-
 
 RMatrix RMatrix::ZerosMatrix(int nRows, int nCols) {
-
     RMatrix m(nRows, nCols);
     for (int i = 0; i < m.nRows; i++) {
         for (int j = 0; j < m.nCols; j++) {
@@ -167,7 +124,6 @@ RMatrix RMatrix::ZerosMatrix(int nRows, int nCols) {
 }
 
 RMatrix RMatrix::OnesMatrix(int nRows, int nCols) {
-
     RMatrix m(nRows, nCols);
     for (int i = 0; i < m.nRows; i++) {
         for (int j = 0; j < m.nCols; j++) {
@@ -177,243 +133,17 @@ RMatrix RMatrix::OnesMatrix(int nRows, int nCols) {
     return m;
 }
 
-void RMatrix::ShowMatrix(RMatrix m) {
+RMatrix RMatrix::OnesMatrix(int ndim) {
+    int nRows = ndim;
+    int nCols = ndim;
+    RMatrix m(nRows, nCols);
     for (int i = 0; i < m.nRows; i++) {
         for (int j = 0; j < m.nCols; j++) {
-            cout << fixed << setprecision(4) << m[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
-
-void RMatrix::ShowMatrix(vector<vector<double>> m) {
-    for (int i = 0; i < m.size(); i++) {
-        for (int j = 0; j < m[0].size(); j++) {
-            cout << fixed << setprecision(4) << m[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
-
-
-RVector RMatrix::Max(RMatrix v) {
-    RVector r(v.nCols);
-    for (int i = 0; i < v.nCols; i++) {
-        r[i] = RVector::Max(RMatrix::GetColVector(v, i));
-    }
-    return r;
-}
-
-RVector RMatrix::Min(RMatrix v) {
-    RVector r(v.nCols);
-    for (int i = 0; i < v.nCols; i++) {
-        r[i] = RVector::Min(RMatrix::GetColVector(v, i));
-    }
-    return r;
-}
-
-RVector RMatrix::Sum(RMatrix v) {
-    RVector r(v.nCols);
-    RVector v1(v.nRows);
-
-    for (int i = 0; i < v.nCols; i++) {
-        v1 = RVector::Max(RMatrix::GetColVector(v, i));
-        r[i] = RVector::Sum(v1);
-    }
-    return r;
-}
-
-RVector RMatrix::Average(RMatrix v) {
-    RVector r(v.nCols);
-    for (int i = 0; i < v.nCols; i++) {
-        r[i] = RVector::Average(RMatrix::GetColVector(v, i));
-    }
-    return r;
-}
-
-
-RVector RMatrix::StadnardDeviation(RMatrix v) {
-    RVector r = Variance(v);
-    r = RVector::Sqrt(r);
-    return r;
-}
-
-RVector RMatrix::Variance(RMatrix v) {
-    int ndim = v.nCols;
-    RVector r(ndim);
-    RVector temp(v.nRows);
-    for (int i = 0; i < ndim; i++) {
-        temp = RMatrix::GetColVector(v, i);
-        temp[i] = RVector::Variance(temp);
-    }
-    return temp;
-}
-
-
-RMatrix RMatrix::MinMaxNormalization(RMatrix x) {
-    RMatrix r(x.nRows, x.nCols);
-    RVector min = Min(x);
-    RVector max = Max(x);
-    for (int i = 0; i < x.nRows; i++) {
-        for (int j = 0; j < x.nCols; j++) {
-            r[i][j] = (x[i][j] - min[j]) / (max[j] - min[j]);
-        }
-    }
-    return r;
-}
-
-
-RMatrix RMatrix::ZeroScoreNormalization(RMatrix x) {
-    RMatrix r(x.nRows, x.nCols);
-    RVector average = Average(x);
-    RVector std = StadnardDeviation(x);
-
-    for (int i = 0; i < x.nRows; i++) {
-        for (int j = 0; j < x.nCols; j++) {
-            r[i][j] = (x[i][j] - average[j]) / std[j];
-        }
-    }
-    return r;
-}
-
-
-RVector RMatrix::GetRowVector(RMatrix x, int i) {
-    if (i < 0 || i > x.nRows) {
-        throw "Error!";
-    }
-    RVector r(x.nCols);
-    for (int index = 0; index < x.nCols; index++) {
-        r[index] = x[i][index];
-    }
-    return r;
-}
-
-void RMatrix::SetRowVector(int i, RVector v) {
-    if (i < 0 || i > v.GetLength()) {
-        throw "Error!";
-    }
-
-    for (int index = 0; index < v.GetLength(); index++) {
-        matrix[i][index] = v[index];
-    }
-}
-
-
-RMatrix RMatrix::UniformRandomMatrix(int rows, int cols) {
-
-    RMatrix m(rows, cols);
-    for (int i = 0; i < m.nRows; i++) {
-        m.SetRowVector(i, RVector::UniformRandomVector(m.nCols, i));
-    }
-    return m;
-}
-
-RVector operator*(RMatrix m1, RVector m2) {
-    if (m1.nCols != m2.GetLength()) {
-        throw "Error";
-    }
-
-    double temp;
-    RVector reuslt(m1.nRows);
-    for (int i = 0; i < m1.nRows; i++) {
-        for (int j = 0; j < m2.GetLength(); j++) {
-            temp = 0;
-            for (int k = 0; k < m1.nCols; k++) {
-                temp += m1[i][j] * m2[k];
-            }
-            reuslt[i] = temp;
-        }
-    }
-    return reuslt;
-}
-
-
-RMatrix operator+(RMatrix m1, RVector m2) {
-    if (m1.nRows != m2.GetLength()) {
-        throw "Error";
-    }
-
-    double temp;
-    RMatrix reuslt(m1.nRows, m1.nCols);
-    for (int i = 0; i < m1.nRows; i++) {
-        for (int j = 0; j < m1.nCols; j++) {
-            m1[i][j] = m1[i][j] + m2[i];
-        }
-    }
-    return reuslt;
-}
-
-
-RMatrix operator*(RVector m1, RVector m2) {
-    RMatrix reuslt(m1.GetLength(), m2.GetLength());
-    for (int i = 0; i < m1.GetLength(); i++) {
-        for (int j = 0; j < m2.GetLength(); j++) {
-
-            reuslt[i][j] = m1[i] * m2[j];
-        }
-    }
-    return reuslt;
-}
-
-
-RMatrix RMatrix::Outerproduct(RVector m1, RVector m2) {
-
-    RMatrix m(m1.GetLength(), m2.GetLength());
-    for (int i = 0; i < m.nRows; i++) {
-        for (int j = 0; j < m.nCols; j++) {
-            m[i][j] = m1[i] * m2[j];
+            m[i][j] = 1;
         }
     }
     return m;
 }
-
-RMatrix operator*(RMatrix m1, double m2) {
-
-    RMatrix m(m1.nRows, m1.nCols);
-    for (int i = 0; i < m.nRows; i++) {
-        for (int j = 0; j < m.nCols; j++) {
-            m[i][j] = m1[i][j] * m2;
-        }
-    }
-    return m;
-}
-
-RMatrix CatCols(RMatrix A, RVector B) {
-    if (A.GetnRows() != B.GetLength()) {
-        throw "Error!";
-    }
-    RMatrix m(A.GetnRows(), A.GetnCols() + 1);
-    for (int i = 0; i < A.GetnRows(); i++) {
-        for (int j = 0; j <= A.GetnCols(); j++) {
-            if (j < A.GetnCols()) {
-                m[i][j] = A[i][j];
-            } else {
-                m[i][j] = B[i];
-            }
-        }
-    }
-    return m;
-}
-
-RMatrix replace(RMatrix A, int i, RVector v) {
-    if (i < 0 || i > A.GetnRows()) {
-        throw "error!";
-    }
-    RMatrix res = RMatrix(A.GetnRows(), A.GetnCols());
-    for (int index = 0; index < A.GetnRows(); index++) {
-        for (int j = 0; j <= A.GetnCols(); j++) {
-            if (i == index) {
-                res[i][j] = v[j];
-            } else {
-                res[i][j] = A[i][j];
-            }
-        }
-    }
-    return res;
-}
-
 
 RMatrix RMatrix::IdentityMatrix(int nRows, int nCols) {
     RMatrix m(nRows, nCols);
@@ -437,24 +167,355 @@ RMatrix RMatrix::IdentityMatrix(int ndim) {
     return m;
 }
 
-RMatrix RMatrix::ConvertToRow(RVector v)
-{
+vector<double> &RMatrix::operator[](int i) {
+    if (i < 0 || i > nRows) {
+        throw "Error!";
+    }
+    return matrix[i];
+}
+
+RMatrix RMatrix::Transpose(RMatrix m) {
+    RMatrix r(m.nCols, m.nRows);
+    for (int i = 0; i < r.nRows; i++) {
+        for (int j = 0; j < r.nCols; j++) {
+            r[i][j] = m[j][i];
+        }
+    }
+    return r;
+}
+
+RMatrix RMatrix::TriU(RMatrix m) {
+    RMatrix r(m.nRows, m.nCols);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            if (i <= j) {
+                r[i][j] = m[i][j];
+            } else {
+                r[i][j] = 0;
+            }
+        }
+    }
+    return r;
+}
+
+RMatrix RMatrix::CatCols(RMatrix m, RVector v) {
+
+    if (m.nRows != v.GetLength()) {
+        throw "Error";
+    }
+    RMatrix r(m.nRows, m.nCols + 1);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            r[i][j] = m[i][j];
+        }
+        r[i][m.nCols] = v[i];
+    }
+    return r;
+}
+
+RMatrix RMatrix::SwapRow(RMatrix mat, int m, int n) {
+    double temp = 0;
+    for (int i = 0; i < mat.nCols; i++) {
+        temp = mat[m][i];
+        mat[m][i] = mat[n][i];
+        mat[n][i] = temp;
+    }
+    return mat;
+}
+
+RVector RMatrix::GetRowVector(RMatrix mat, int m) {
+    if (m < 0 || m > mat.nRows) {
+        throw "Error";
+    }
+    RVector v(mat.nCols);
+    for (int i = 0; i < mat.nCols; i++) {
+        v[i] = mat[m][i];
+    }
+    return v;
+}
+
+RVector RMatrix::GetColVector(RMatrix mat, int n) {
+    if (n < 0 || n > mat.nCols) {
+        throw "Error";
+    }
+    RVector v(mat.nRows);
+    for (int i = 0; i < mat.nRows; i++) {
+        v[i] = mat[i][n];
+    }
+    return v;
+}
+
+RMatrix RMatrix::ReplaceRow(RMatrix mat, int m, RVector vec) {
+    if (m < 0 || m > mat.nRows) {
+        throw "Error!";
+    }
+    if (vec.GetLength() != mat.nCols) {
+        throw "Error!";
+    }
+    for (int i = 0; i < mat.nCols; i++) {
+        mat[m][i] = vec[i];
+    }
+    return mat;
+}
+
+RMatrix RMatrix::ReplaceCol(RMatrix mat, int n, RVector vec) {
+    if (n < 0 || n > mat.nCols) {
+        throw "Error!";
+    }
+    if (vec.GetLength() != mat.nRows) {
+        throw "Error!";
+    }
+    for (int i = 0; i < mat.nRows; i++) {
+        mat[i][n] = vec[i];
+    }
+    return mat;
+}
+
+void RMatrix::ShowMatrix(RMatrix m) {
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            cout << fixed << setprecision(4) << m[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+void RMatrix::ShowMatrix(vector<vector<double>> m) {
+    for (int i = 0; i < m.size(); i++) {
+        for (int j = 0; j < m[0].size(); j++) {
+            cout << fixed << setprecision(4) << m[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+RVector operator*(RMatrix m, RVector v) {
+    if (v.GetLength() != m.nCols) {
+        throw "Error";
+    }
+    RVector r(m.nRows);
+    for (int i = 0; i < m.nRows; i++) {
+        double sum = 0;
+        for (int j = 0; j < m.nCols; j++) {
+            sum += v[j] * m[i][j];
+        }
+        r[i] = sum;
+    }
+    return r;
+}
+
+RMatrix operator*(RMatrix m, double r) {
+    RMatrix result(m.nRows, m.nCols);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            result[i][j] = m[i][j] * r;
+        }
+    }
+    return result;
+
+}
+
+RMatrix operator*(double r, RMatrix m) {
+    RMatrix result(m.nRows, m.nCols);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            result[i][j] = m[i][j] * r;
+        }
+    }
+    return result;
+}
+
+RMatrix operator/(RMatrix m, double r) {
+    RMatrix result(m.nRows, m.nCols);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            result[i][j] = m[i][j] / r;
+        }
+    }
+    return result;
+}
+
+RMatrix operator/(double r, RMatrix m) {
+    RMatrix result(m.nRows, m.nCols);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            result[i][j] = r / m[i][j];
+        }
+    }
+    return result;
+}
+
+RVector RMatrix::Max(RMatrix m) {
+    RVector r(m.nCols);
+    for (int i = 0; i < m.nCols; i++) {
+        r[i] = RVector::Max(RMatrix::GetColVector(m, i));
+    }
+    return r;
+}
+
+RVector RMatrix::Min(RMatrix m) {
+    RVector r(m.nCols);
+    for (int i = 0; i < m.nCols; i++) {
+        r[i] = RVector::Min(RMatrix::GetColVector(m, i));
+    }
+    return r;
+}
+
+RVector RMatrix::Sum(RMatrix m) {
+    RVector r(m.nCols);
+    RVector v(m.nRows);
+    for (int i = 0; i < m.nCols; i++) {
+        v = RMatrix::GetColVector(m, i);
+        r[i] = RVector::Sum(v);
+    }
+    return r;
+}
+
+RVector RMatrix::Average(RMatrix m) {
+    RVector r(m.nCols);
+    for (int i = 0; i < m.nCols; i++) {
+        r[i] = RVector::Average(RMatrix::GetColVector(m, i));
+    }
+    return r;
+}
+
+RVector RMatrix::StandardDeviation(RMatrix m) {
+    RVector r = Variance(m);
+    r = RVector::Sqrt(r);
+    return r;
+}
+
+RVector RMatrix::Variance(RMatrix m) {
+    int ndim = m.nCols;
+    RVector r(ndim);
+    RVector v(m.nRows);
+    for (int i = 0; i < ndim; i++) {
+        v = RMatrix::GetColVector(m, i);
+        r[i] = RVector::Variance(v);
+    }
+    return r;
+}
+
+RMatrix RMatrix::CovarianceMatrix(RMatrix m) {
+    int ndim = m.nCols;
+    RMatrix r(ndim);
+    RVector x(m.nRows);
+    RVector y(m.nRows);
+    for (int i = 0; i < ndim; i++) {
+        for (int j = 0; j < ndim; j++) {
+            x = RMatrix::GetColVector(m, i);
+            y = RMatrix::GetColVector(m, j);
+            r[i][j] = RVector::Covariance(x, y);
+        }
+    }
+    return r;
+}
+
+RMatrix RMatrix::CorrelationMatrix(RMatrix m) {
+    int ndim = m.nCols;
+    RMatrix r(ndim);
+    RVector x(m.nRows);
+    RVector y(m.nRows);
+    for (int i = 0; i < ndim; i++) {
+        for (int j = 0; j < ndim; j++) {
+            x = RMatrix::GetColVector(m, i);
+            y = RMatrix::GetColVector(m, j);
+            r[i][j] = RVector::Correlation(x, y);
+        }
+    }
+    return r;
+}
+
+RMatrix RMatrix::MinMaxNormalization(RMatrix m) {
+    RMatrix r(m.nRows, m.nCols);
+    RVector min = Min(m);
+    RVector max = Max(m);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            r[i][j] = (m[i][j] - min[j]) / (max[j] - min[j]);
+        }
+    }
+    return r;
+}
+
+RMatrix RMatrix::ZeroScoreNormalization(RMatrix m) {
+    RMatrix r(m.nRows, m.nCols);
+    RVector average = Average(m);
+    RVector std = StandardDeviation(m);
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            r[i][j] = (m[i][j] - average[j]) / std[j];
+        }
+    }
+    return r;
+}
+
+//RMatrix RMatrix::MinMaxNormalization(RMatrix m)
+//{
+//	RMatrix r(m);
+//	RVector v(m.nRows);
+//	RVector temp(m.nRows);
+//	for (int i = 0; i < m.nCols; i++)
+//	{		
+//		v = RMatrix::GetColVector(r, i);
+//		temp = RVector::MinMaxNormalization(v);
+//		r = RMatrix::ReplaceCol(r, i, temp);
+//	}
+//	return r;
+//}
+//RMatrix RMatrix::ZeroScoreNormalization(RMatrix m)
+//{
+//	RMatrix r(m);
+//	RVector v(m.nRows);
+//	RVector temp(m.nRows);
+//	for (int i = 0; i < m.nCols; i++)
+//	{
+//		v = RMatrix::GetColVector(r, i);
+//		temp = RVector::ZeroScoreNormalization(v);
+//		r = RMatrix::ReplaceCol(r, i, temp);
+//	}
+//	return r;
+//}
+RMatrix RMatrix::UniformRandomMatrix(int m, int n) {
+    RMatrix r(m, n);
+    srand((unsigned) time(NULL));
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            r[i][j] = double(rand()) / double(RAND_MAX);
+        }
+    }
+    return r;
+}
+
+RMatrix RMatrix::ConvertToRow(RVector v) {
     int ndim = v.GetLength();
     RMatrix m(1, ndim);
-    for (int i = 0; i < ndim; i++)
-    {
+    for (int i = 0; i < ndim; i++) {
         m[0][i] = v[i];
     }
     return m;
 }
-RMatrix RMatrix::ConvertToCol(RVector v)
-{
+
+RMatrix RMatrix::ConvertToCol(RVector v) {
     int ndim = v.GetLength();
     RMatrix m(ndim, 1);
-    for (int i = 0; i < ndim; i++)
-    {
+    for (int i = 0; i < ndim; i++) {
         m[i][0] = v[i];
     }
     return m;
 }
 
+double RMatrix::Norm(RMatrix m) {
+    double r = 0;
+    int nRows = m.nRows;
+    int nCols = m.nCols;
+    for (int i = 0; i < nRows; i++) {
+        for (int j = 0; j < nCols; j++) {
+            r += m[i][j] * m[i][j];
+        }
+    }
+    r = sqrt(r);
+    return r;
+}

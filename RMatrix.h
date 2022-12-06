@@ -1,14 +1,12 @@
-//
-// Created by lhc456 on 2022/10/16.
-//
-#include <vector>
-#include "Rvector.h"
+#pragma once
+
+#include "RVector.h"
+#include<vector>
+#include <cmath>
+#include <iostream>
+#include <iomanip>
 
 using namespace std;
-
-#ifndef PLAY_WITH_ALGO_RMATRIX_H
-#define PLAY_WITH_ALGO_RMATRIX_H
-
 
 class RMatrix {
 private:
@@ -34,73 +32,82 @@ public:
 
     vector<double> &operator[](int i);
 
-    friend RMatrix operator+(RMatrix m1, RMatrix m2);
-
-    friend RMatrix operator*(RMatrix m1, RMatrix m2);
-
-    static RMatrix Transpose(RMatrix m);
-
-    static RMatrix TriU(RMatrix m);
-
-    static RMatrix SwapRow(RMatrix mat, int m, int n);
+    static RMatrix ZerosMatrix(int ndim);
 
     static RMatrix ZerosMatrix(int nRows, int nCols);
 
     static RMatrix OnesMatrix(int nRows, int nCols);
 
-    static void ShowMatrix(RMatrix m);
-
-
-    static void ShowMatrix(vector<vector<double>> m);
-
-
-    static RVector GetColVector(RMatrix m, int i);
-
-    static RVector Max(RMatrix v);
-
-    static RVector Min(RMatrix v);
-
-    static RVector Sum(RMatrix v);
-
-    static RVector Average(RMatrix v);
-
-    static RVector StadnardDeviation(RMatrix v);
-
-    static RVector Variance(RMatrix v);
-
-    static RMatrix MinMaxNormalization(RMatrix x);
-
-    static RMatrix ZeroScoreNormalization(RMatrix x);
-
-    static RVector GetRowVector(RMatrix x, int i);
-
-    static RMatrix UniformRandomMatrix(int rows, int cols);
-
-    void SetRowVector(int i, RVector v);
-
-    friend RVector operator*(RMatrix m1, RVector m2);
-
-    friend RMatrix operator*(RMatrix m1, double m2);
-
-    friend RMatrix operator+(RMatrix m1, RVector m2);
-
-    friend RMatrix operator*(RVector m1, RVector m2);
-
-    static RMatrix Outerproduct(RVector m1, RVector m2);
-
-    static RMatrix CatCols(RMatrix A, RVector B);
-
-    static RMatrix Replace(RMatrix A, int i, RVector v);
+    static RMatrix OnesMatrix(int ndim);
 
     static RMatrix IdentityMatrix(int nRows, int nCols);
 
     static RMatrix IdentityMatrix(int ndim);
 
+    friend RMatrix operator+(RMatrix m1, RMatrix m2);
+
+    friend RMatrix operator-(RMatrix m1, RMatrix m2);
+
+    friend RMatrix operator*(RMatrix m1, RMatrix m2);
+
+    friend RVector operator*(RMatrix m, RVector v);
+
+    friend RMatrix operator*(RMatrix m, double r);
+
+    friend RMatrix operator*(double r, RMatrix m);
+
+    friend RMatrix operator/(RMatrix m, double r);
+
+    friend RMatrix operator/(double r, RMatrix m);
+
+    static RMatrix Transpose(RMatrix m);
+
+    static RMatrix TriU(RMatrix m);
+
+    static RMatrix CatCols(RMatrix m, RVector v);
+
+    static RMatrix SwapRow(RMatrix mat, int m, int n);
+
+    static RVector GetRowVector(RMatrix mat, int m);
+
+    static RVector GetColVector(RMatrix mat, int n);
+
+    static RMatrix ReplaceRow(RMatrix mat, int m, RVector vec);
+
+    static RMatrix ReplaceCol(RMatrix mat, int n, RVector vec);
+
     static RMatrix ConvertToRow(RVector v);
 
     static RMatrix ConvertToCol(RVector v);
 
+    static void ShowMatrix(RMatrix m);
+
+    static void ShowMatrix(vector<vector<double>> m);
+
+    static RVector Max(RMatrix m);
+
+    static RVector Min(RMatrix m);
+
+    static RVector Sum(RMatrix m);
+
+    static RVector Average(RMatrix m);
+
+    static RVector StandardDeviation(RMatrix m);
+
+    static RVector Variance(RMatrix m);
+
+    static RMatrix CovarianceMatrix(RMatrix m);
+
+    static RMatrix CorrelationMatrix(RMatrix m);
+
+    static RMatrix MinMaxNormalization(RMatrix m);
+
+    static RMatrix ZeroScoreNormalization(RMatrix m);
+
+    static RMatrix UniformRandomMatrix(int m, int n);
+
+    static double Norm(RMatrix m);
+
+//    static RMatrix Replace(RMatrix A, RVector b, int i);
+
 };
-
-
-#endif //PLAY_WITH_ALGO_RMATRIX_H

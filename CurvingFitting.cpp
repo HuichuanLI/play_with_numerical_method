@@ -22,22 +22,22 @@ RVector LineFitting(RVector x, RVector y) {
 }
 
 
-RVector PolynomialFitting(RVector X, RVector Y, int deg) {
-    int num = X.GetLength();
-    RMatrix Phi(deg + 1, num);
-    RMatrix PhiT(num, deg + 1);
-
-    RVector vec(num);
-    RMatrix A;
-    RVector B;
-    for (int i = 0; i < Phi.GetnCols(); i++) {
-        vec = RVector::Pow(X, i);
-        Phi = RMatrix::Replace(Phi, i, vec);
-    }
-    PhiT = RMatrix::Transpose(Phi);
-    A = Phi * PhiT;
-    B = Phi * Y;
-    RVector result = SolutionofLinearEquations::Gauss(A, B);
-    return result;
-
-}
+//RVector PolynomialFitting(RVector X, RVector Y, int deg) {
+//    int num = X.GetLength();
+//    RMatrix Phi(deg + 1, num);
+//    RMatrix PhiT(num, deg + 1);
+//
+//    RVector vec(num);
+//    RMatrix A;
+//    RVector B;
+//    for (int i = 0; i < Phi.GetnCols(); i++) {
+//        vec = RVector::Pow(X, i);
+//        Phi = RMatrix::Replace(Phi, vec,i);
+//    }
+//    PhiT = RMatrix::Transpose(Phi);
+//    A = Phi * PhiT;
+//    B = Phi * Y;
+//    RVector result = SolutionofLinearEquations::Gauss(A, B);
+//    return result;
+//
+//}

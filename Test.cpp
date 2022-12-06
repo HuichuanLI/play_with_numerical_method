@@ -8,6 +8,7 @@
 #include "NimericalDifferentaiation.h"
 #include "NumericalOptimization.h"
 #include "CurvingFitting.h"
+#include "EigenvectorandEigenvalue.h"
 
 using namespace std;
 
@@ -62,25 +63,23 @@ int main() {
 //    cout << fixed << setprecision(4) << f << endl;
 
 
-    vector<double> x1 = {-1, 0, 1, 2, 3, 4, 5, 6};
-    vector<double> y1 = {10, 9, 7, 5, 4, 3, 0, -1};
 
-    RVector X(x1);
-    RVector Y(y1);
-    RVector R = LineFitting(X, Y);
-
-    RVector::ShowVector(R);
-
-    vector<double> x = {-3, 0, 2, 4};
-    vector<double> y = {3, 1, 1, 3};
-
-    RVector X1(x);
-    RVector Y1(y);
-
-    int deg = 2;
-
-    RVector r = PolynomialFitting(X1, Y1, 2);
-
+    vector<vector<double>> m = {{3,  0, -10},
+                                {-1, 3, 4},
+                                {0,  1, -2}};
+    RMatrix M(m);
+    double p = 4.3;
+    RMatrix::ShowMatrix(M);
+    RVector u = EigenvectorandEigenvalue::Eigenvector(M, p);
+    RVector::ShowVector(u);
+    RVector v = M * u;
+    RVector::ShowVector(v);
+    double x1 = v[0] / u[0];
+    cout << x1 << endl;
+    double x2 = v[1] / u[1];
+    cout << x2 << endl;
+    double x3 = v[2] / u[2];
+    cout << x3 << endl;
 
 }
 
